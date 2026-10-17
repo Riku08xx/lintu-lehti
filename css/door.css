@@ -1,0 +1,75 @@
+/* ===== 入店演出（扉） ===== */
+.door-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  padding: 24px 16px;
+  background:
+    linear-gradient(to bottom, transparent 84%, #a57e55 84%),
+    repeating-linear-gradient(90deg, #d8bd93 0 68px, #cdb083 68px 71px);
+  overflow: hidden;
+  transition: opacity .8s ease;
+}
+.door-overlay[hidden] { display: none; }
+.door-overlay.is-leaving { opacity: 0; pointer-events: none; }
+
+.door-sign {
+  position: relative; z-index: 2; margin: 0;
+  padding: 6px 28px; border-radius: 12px;
+  background: var(--bark); color: var(--cream); box-shadow: 0 6px 0 #4b3320;
+  font-family: var(--font-display); font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: .04em;
+}
+.door-sign span { color: var(--sun); font-style: italic; }
+
+.door-stage { position: relative; display: flex; align-items: flex-end; justify-content: center; }
+.door-plant { width: clamp(64px, 13vw, 130px); flex-shrink: 0; margin-bottom: -4px; }
+.door-plant svg { display: block; width: 100%; height: auto; }
+
+.doorway {
+  position: relative; z-index: 1;
+  width: min(58vw, 280px, 40vh);
+  width: min(58vw, 280px, 40dvh);
+  aspect-ratio: 3 / 5;
+  perspective: 1400px;
+  transition: transform 1s cubic-bezier(.6, 0, .4, 1);
+}
+.doorway-frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.door-light {
+  position: absolute; left: 10%; right: 10%; top: 8%; bottom: 0;
+  border-radius: 999px 999px 0 0; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 62%, #fffbe9 0%, #ffe9ad 42%, #bcd79b 100%);
+}
+.door-light svg { width: 100%; height: 100%; display: block; }
+.door-light .drift { animation: drift 3s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes drift { from { transform: translateY(0) rotate(0); } to { transform: translateY(-14px) rotate(18deg); } }
+
+.door {
+  position: absolute; left: 10%; right: 10%; top: 8%; bottom: 0;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  border-radius: 999px 999px 0 0;
+  transform-origin: 0% 50%;
+  transition: transform 1.1s cubic-bezier(.55, 0, .3, 1);
+}
+.door svg { display: block; width: 100%; height: 100%; }
+.door:hover { transform: rotateY(-9deg); }
+.door:focus-visible { outline: 4px solid var(--sky-deep); outline-offset: 6px; }
+.door-overlay.is-opening .door { transform: rotateY(-100deg); }
+.door-overlay.is-leaving .doorway { transform: scale(2.6); }
+
+.door-hint {
+  position: relative; z-index: 2; margin: 4px 0 0;
+  padding: 6px 20px; border-radius: 999px;
+  background: rgba(255, 250, 242, .92); color: var(--bark); font-weight: 700;
+  animation: pulse 1.8s ease-in-out infinite;
+  transition: opacity .3s;
+}
+.door-overlay.is-opening .door-hint { opacity: 0; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+.door-note { position: relative; z-index: 2; margin: 0; font-size: .8rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .35); }
+
+.door-skip {
+  position: absolute; top: 16px; right: 16px; z-index: 3;
+  min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px;
+  background: rgba(255, 250, 242, .92); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer;
+}
+.door-skip:hover { background: #fff; }

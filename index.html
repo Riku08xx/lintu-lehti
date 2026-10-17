@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lintu &amp; Lehti | 鳥と葉っぱのカフェ</title>
+  <meta name="description" content="看板インコの Taivas と Aurinko がお出迎えする、観葉植物いっぱいの北欧風カフェ「Lintu & Lehti」（架空のカフェです）。">
+  <meta name="theme-color" content="#f6efe2">
+  <!-- 検索エンジンに載せない（リンクを知っている人だけが見る想定） -->
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237d8f69'/%3E%3Cpath d='M16 40 C 17 30 25 25 33 26 C 35 20 43 19 46 24 L 51 25 L 46 28 C 46 38 38 45 28 45 C 23 45 19 44 15 47 Z' fill='%23f7d633'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/scene.css">
+  <link rel="stylesheet" href="css/birds.css">
+  <link rel="stylesheet" href="css/door.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/latte.css">
+
+  <script src="js/data/menu.js" defer></script>
+  <script src="js/data/news.js" defer></script>
+  <script src="js/data/birds-profile.js" defer></script>
+  <script src="js/svg/shapes.js" defer></script>
+  <script src="js/svg/bird.js" defer></script>
+  <script src="js/svg/tree.js" defer></script>
+  <script src="js/svg/scenery.js" defer></script>
+  <script src="js/svg/door.js" defer></script>
+  <script src="js/svg/cup.js" defer></script>
+  <script src="js/svg/map.js" defer></script>
+  <script src="js/birds.js" defer></script>
+  <script src="js/scene.js" defer></script>
+  <script src="js/door.js" defer></script>
+  <script src="js/latte.js" defer></script>
+  <script src="js/pages.js" defer></script>
+  <script src="js/router.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <button type="button" class="skip-link" id="skip-link">本文へスキップ</button>
+
+  <div class="scene" aria-hidden="true">
+    <div class="layer layer-back" id="layer-back"></div>
+    <div class="layer layer-mid" id="layer-mid"></div>
+  </div>
+
+  <header class="site-header">
+    <a class="logo" href="#/" aria-label="Lintu &amp; Lehti 木の目次（トップ）へ">
+      <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <circle cx="32" cy="32" r="30" fill="#7d8f69"/>
+        <path d="M14 22 C 22 10 40 10 48 18 C 38 16 26 18 14 22 Z" fill="#a9bb92"/>
+        <path d="M16 40 C 17 30 25 25 33 26 C 35 20 43 19 46 24 L 51 25 L 46 28 C 46 38 38 45 28 45 C 23 45 19 44 15 47 Z" fill="#f7d633"/>
+        <circle cx="41" cy="25" r="1.8" fill="#3a2e24"/>
+      </svg>
+      <span class="logo-text">Lintu <span class="amp">&amp;</span> Lehti</span>
+    </a>
+    <nav class="quick-nav" aria-label="ページ一覧">
+      <ul>
+        <li><a href="#/" data-route="/">木（トップ）</a></li>
+        <li><a href="#/menu" data-route="/menu">メニュー</a></li>
+        <li><a href="#/birds" data-route="/birds">インコ</a></li>
+        <li><a href="#/story" data-route="/story">こだわり</a></li>
+        <li><a href="#/access" data-route="/access">アクセス</a></li>
+        <li><a href="#/news" data-route="/news">お知らせ</a></li>
+        <li><a href="#/contact" data-route="/contact">予約</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div id="view" class="view">
+      <noscript><p class="panel">このサイトの演出には JavaScript が必要です。</p></noscript>
+    </div>
+    <div id="birds" class="birds-layer"></div>
+  </main>
+
+  <div class="scene-front" id="scene-front" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <p><strong>このサイトは架空のカフェです。</strong>実在の店舗・場所・人物とは関係ありません。</p>
+    <p class="copy">Lintu &amp; Lehti — a fictional cafe of birds &amp; leaves. Illustrations drawn in code.</p>
+  </footer>
+
+  <div class="leaf-cover" id="leaf-cover" aria-hidden="true"></div>
+  <div class="door-overlay" id="door" hidden></div>
+  <dialog id="latte" class="latte-dialog" aria-labelledby="latte-title"></dialog>
+</body>
+</html>

@@ -1,0 +1,246 @@
+/* ===== 7ページそれぞれのレイアウト ===== */
+main { position: relative; z-index: 10; flex: 1 0 auto; }
+.view {
+  position: relative;
+  max-width: 1120px; margin: 0 auto;
+  padding: clamp(24px, 4vw, 44px) var(--gutter) 72px;
+}
+.view .page > * + * { margin-top: 22px; }
+
+/* ページ見出し（上に止まり木） */
+.page-head {
+  position: relative;
+  margin-top: 64px;
+  padding: 22px 260px 22px clamp(20px, 3vw, 34px);
+  background: rgba(255, 250, 242, .93);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.page-kicker { margin: 0; font-family: var(--font-display); font-style: italic; color: var(--moss-dark); letter-spacing: .08em; }
+.page-head h1 { margin: 0; font-family: var(--font-display); font-size: clamp(1.8rem, 4.4vw, 2.7rem); color: var(--bark); }
+.lead { margin: 6px 0 0; color: var(--ink-soft); max-width: 42em; }
+
+@media (max-width: 700px) {
+  .page-head { margin-top: 52px; padding: 18px 20px; }
+  .page-head h1 { padding-right: 0; }
+}
+
+/* ===== A. トップ（木の目次） ===== */
+.page-tree { text-align: center; }
+.tree-title { display: flex; flex-direction: column; align-items: center; margin: 0; }
+.tree-title .logo-big {
+  font-family: var(--font-display); font-size: clamp(2.3rem, 7vw, 4rem); line-height: 1.1;
+  color: var(--bark); text-shadow: 0 2px 0 rgba(255, 250, 242, .8);
+}
+.tree-title .logo-big .amp { color: var(--moss); font-style: italic; }
+.tree-title .sub { margin-top: 6px; padding: 0 14px; border-radius: 999px; background: rgba(255, 250, 242, .85); font-size: .95rem; color: var(--moss-dark); letter-spacing: .3em; }
+.tree-lead {
+  display: inline-block; margin: 12px 0 0; padding: 6px 20px; border-radius: 999px;
+  background: rgba(255, 250, 242, .92); font-size: .95rem;
+}
+
+.tree { position: relative; width: 100%; max-width: 1000px; margin: 6px auto 0; aspect-ratio: 5 / 4; }
+.tree-art { position: absolute; inset: 0; }
+.tree-art svg { display: block; width: 100%; height: 100%; }
+.tree-tall { display: none; }
+.tree-signs { margin: 0; padding: 0; list-style: none; }
+.tree-signs li { position: absolute; left: var(--x); top: var(--y); transform: translateX(-50%); }
+
+.sign {
+  position: relative; display: inline-flex; flex-direction: column; align-items: center;
+  min-width: 136px; min-height: 44px; margin-top: 28px; padding: 6px 16px 8px;
+  border: 3px solid var(--wood-dark); border-radius: 12px;
+  background: repeating-linear-gradient(0deg, #ead7b5 0 14px, #e3cda8 14px 16px);
+  box-shadow: 0 5px 0 var(--wood-dark);
+  color: var(--ink); text-decoration: none;
+  transform: rotate(var(--r, 0deg)); transform-origin: 50% -28px;
+}
+.sign::before, .sign::after {
+  content: ""; position: absolute; bottom: 100%; width: 2px; height: 31px; background: var(--bark);
+}
+.sign::before { left: 24%; transform: rotate(14deg); transform-origin: bottom; }
+.sign::after  { right: 24%; transform: rotate(-14deg); transform-origin: bottom; }
+.sign:hover, .sign:focus-visible { animation: swing 1s ease; }
+.sign-en { font-family: var(--font-display); font-style: italic; font-size: .82rem; line-height: 1.3; color: var(--moss-dark); }
+.sign-ja { font-weight: 700; font-size: 1.02rem; line-height: 1.4; white-space: nowrap; }
+.sign .dot { position: absolute; top: 6px; right: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--sky); }
+.sign .dot.sun { background: var(--sun); }
+@keyframes swing {
+  0% { transform: rotate(var(--r, 0deg)); } 25% { transform: rotate(8deg); }
+  55% { transform: rotate(-5deg); } 80% { transform: rotate(2deg); } 100% { transform: rotate(var(--r, 0deg)); }
+}
+
+body.pre-entry .tree-signs .sign { opacity: 0; }
+.tree.is-dropping .sign { animation: sign-drop .8s cubic-bezier(.3, 1.5, .5, 1) both; animation-delay: calc(var(--i) * 140ms); }
+@keyframes sign-drop {
+  from { opacity: 0; transform: translateY(-60px) rotate(-14deg); }
+  to   { opacity: 1; transform: rotate(var(--r, 0deg)); }
+}
+
+.tree-info {
+  display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px;
+  margin: 18px auto 0; padding: 8px 22px; border-radius: 999px;
+  background: rgba(255, 250, 242, .93); font-size: .9rem;
+}
+
+@media (max-width: 700px) {
+  .tree { aspect-ratio: 4 / 9; max-width: 420px; }
+  .tree-wide { display: none; }
+  .tree-tall { display: block; }
+  .tree-signs li { left: var(--mx); top: var(--my); }
+  .tree .perch { left: var(--mx); top: var(--my); }
+  .sign { min-width: 118px; padding: 5px 10px 7px; }
+  .sign-ja { font-size: .92rem; }
+  .tree-info { border-radius: 18px; }
+}
+
+/* ===== B. メニュー ===== */
+.menu-cats { display: grid; gap: 22px; }
+.cat-note { margin: 0; color: var(--ink-soft); font-size: .92rem; }
+.menu-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px;
+  margin: 14px 0 0; padding: 0; list-style: none;
+}
+.menu-item {
+  display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center;
+  width: 100%; height: 100%; padding: 12px 14px;
+  border: 1px solid var(--line); border-radius: 16px; background: var(--cream);
+  font: inherit; color: inherit; text-align: left;
+}
+button.menu-item { cursor: pointer; transition: transform .2s, box-shadow .2s, border-color .2s; }
+button.menu-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--wood); }
+.mi-icon svg { display: block; width: 64px; height: 64px; }
+.mi-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.mi-name { display: block; font-weight: 700; line-height: 1.5; }
+.mi-tag {
+  display: inline-block; margin-left: 6px; padding: 0 8px; border-radius: 999px;
+  background: var(--sky-deep); color: #fff; font-size: .72rem; font-weight: 700; vertical-align: 2px;
+}
+.mi-tag.sun { background: var(--sun); color: var(--ink); }
+.mi-desc { display: block; margin-top: 2px; font-size: .85rem; line-height: 1.65; color: var(--ink-soft); }
+.mi-cta { display: block; margin-top: 4px; font-size: .78rem; font-weight: 700; color: var(--moss-dark); }
+.mi-price { font-family: var(--font-display); font-weight: 700; color: var(--bark); white-space: nowrap; }
+.menu-foot { font-size: .85rem; color: var(--ink-soft); }
+
+/* ===== C. インコ紹介 ===== */
+.bird-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.bird-card { border-top: 12px solid var(--sky); }
+.bird-card.is-sun { border-top-color: var(--sun); }
+.bird-card-art { width: 150px; height: 150px; margin: 0 auto; }
+.bird-card-art svg { width: 100%; height: 100%; }
+.bird-card.is-sun .bird-card-art { transform: scaleX(-1); }
+.bird-card h2 { justify-content: center; margin: 0; font-size: 2rem; }
+.bird-card .reading { margin: 0; text-align: center; color: var(--ink-soft); }
+.profile { display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 12px; margin: 16px 0 0; }
+.profile dt { font-weight: 700; color: var(--moss-dark); }
+.profile dd { margin: 0; }
+.quote {
+  position: relative; margin: 18px 0 0; padding: 12px 18px;
+  border-radius: 16px; background: var(--cream); font-weight: 700;
+}
+.quote::before { content: "ひとこと"; display: block; font-size: .75rem; font-weight: 700; color: var(--moss-dark); }
+.tips { margin: 10px 0 0; padding-left: 1.3em; }
+.tips li + li { margin-top: 4px; }
+.try-note { margin: 10px 0 0; padding: 10px 16px; border-radius: 14px; background: #fff8d6; font-size: .92rem; }
+
+/* ===== D. 店内・こだわり ===== */
+.story-intro { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center; }
+.story-intro p { margin: 0 0 10px; }
+.timeline { margin: 0; padding: 0; list-style: none; border-left: 3px dotted var(--moss); }
+.timeline li { position: relative; padding: 0 0 12px 22px; }
+.timeline li::before {
+  content: ""; position: absolute; left: -8px; top: 9px; width: 13px; height: 13px;
+  border-radius: 50%; background: var(--sun); border: 2px solid var(--bark);
+}
+.timeline time { display: block; font-family: var(--font-display); font-weight: 700; color: var(--bark); line-height: 1.4; }
+.card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 14px 0 0; padding: 0; list-style: none; }
+.card-list li { padding: 14px; border-radius: 16px; background: var(--cream); text-align: center; }
+.card-list svg { width: 96px; height: 96px; }
+.card-list h3 { margin: 6px 0 2px; font-size: 1.05rem; }
+.card-list p { margin: 0; font-size: .88rem; color: var(--ink-soft); line-height: 1.65; text-align: left; }
+.safety { margin: 14px 0 0; padding: 12px 18px; border-left: 6px solid var(--moss); border-radius: 12px; background: #eef2e6; font-size: .92rem; }
+
+/* ===== E. アクセス ===== */
+.access-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; align-items: start; }
+.map-wrap svg { display: block; width: 100%; height: auto; border-radius: 14px; }
+.map-caption { margin: 8px 0 0; font-size: .85rem; color: var(--ink-soft); }
+.info-list { display: grid; grid-template-columns: 6em 1fr; gap: 8px 12px; margin: 0; }
+.info-list dt { font-weight: 700; color: var(--moss-dark); }
+.info-list dd { margin: 0; }
+.open-status { display: inline-block; margin: 0 0 12px; padding: 4px 16px; border-radius: 999px; font-weight: 700; }
+.open-status.is-open { background: var(--moss-dark); color: #fff; }
+.open-status.is-closed { background: var(--wood-light); color: var(--ink); }
+.hours { width: 100%; margin-top: 10px; border-collapse: collapse; }
+.hours th, .hours td { padding: 7px 10px; border-bottom: 1px dashed var(--line); text-align: left; }
+.hours th { width: 5em; }
+.hours tr.is-closed td { color: var(--ink-soft); }
+.hours tr.is-today { background: rgba(247, 214, 51, .3); }
+.hours .today-mark { margin-left: 6px; padding: 0 6px; border-radius: 6px; background: var(--bark); color: #fff; font-size: .72rem; }
+
+/* ===== F. ニュース ===== */
+.news-list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.news-item { padding: 0; overflow: hidden; }
+.news-item summary {
+  display: grid; grid-template-columns: auto auto 1fr auto; gap: 6px 14px; align-items: center;
+  min-height: 56px; padding: 14px 22px; cursor: pointer; list-style: none;
+}
+.news-item summary::-webkit-details-marker { display: none; }
+.news-item summary:hover { background: var(--cream); }
+.news-date { font-family: var(--font-display); font-weight: 700; color: var(--bark); white-space: nowrap; }
+.news-tag { padding: 0 10px; border-radius: 999px; background: var(--moss-dark); color: #fff; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.news-tag.is-sky { background: var(--sky-deep); }
+.news-tag.is-sun { background: var(--sun); color: var(--ink); }
+.news-title { font-weight: 700; }
+.news-toggle {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--cream);
+  display: grid; place-items: center; font-weight: 700; transition: transform .25s;
+}
+.news-item[open] .news-toggle { transform: rotate(45deg); }
+.news-body { padding: 0 22px 18px; }
+.news-body p { margin: 0; }
+
+/* ===== G. 予約・お問い合わせ ===== */
+.contact-grid { display: grid; grid-template-columns: 1.45fr 1fr; gap: 22px; align-items: start; }
+.fictional-note {
+  margin: 0 0 18px; padding: 12px 16px; border-radius: 14px;
+  background: #fff4d1; border: 2px dashed var(--sun-deep); font-size: .9rem;
+}
+.form-row { display: grid; gap: 4px; margin-bottom: 16px; }
+.form-row > label, fieldset legend { font-weight: 700; }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.req { margin-left: 6px; padding: 0 6px; border-radius: 6px; background: var(--moss-dark); color: #fff; font-size: .72rem; vertical-align: 2px; }
+.hint { font-size: .8rem; color: var(--ink-soft); }
+.form-row input, .form-row select, .form-row textarea {
+  width: 100%; min-height: 48px; padding: 10px 14px;
+  border: 2px solid var(--wood-light); border-radius: 12px; background: #fff;
+  font: inherit; font-size: 1rem; color: var(--ink);
+}
+.form-row textarea { min-height: 120px; resize: vertical; }
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--sky); outline: 3px solid rgba(47, 164, 231, .25); outline-offset: 0; }
+fieldset { margin: 0 0 16px; padding: 0; border: 0; }
+.radio-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.radio-group label {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
+  border: 2px solid var(--wood-light); border-radius: 999px; background: #fff; cursor: pointer;
+}
+.radio-group input { accent-color: var(--moss-dark); width: 18px; height: 18px; }
+.thanks {
+  margin-top: 18px; padding: 16px 20px; border-radius: 16px;
+  background: #e8f5fd; border: 2px solid var(--sky); font-weight: 700;
+}
+.thanks:empty { display: none; }
+.contact-side p { margin: 0 0 10px; }
+
+@media (max-width: 860px) {
+  .story-intro, .access-grid, .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .menu-list { grid-template-columns: 1fr; }
+  .menu-item { grid-template-columns: 52px 1fr; gap: 12px; }
+  .mi-icon svg { width: 52px; height: 52px; }
+  .form-2col { grid-template-columns: 1fr; }
+  .news-item summary { grid-template-columns: auto 1fr auto; padding: 12px 16px; }
+  .news-title { grid-column: 1 / -1; grid-row: 2; }
+  .news-body { padding: 0 16px 16px; }
+  .profile, .info-list { grid-template-columns: 6.5em 1fr; }
+}

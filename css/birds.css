@@ -1,0 +1,65 @@
+/* ===== インコ ===== */
+.birds-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
+
+.bird {
+  --bw: 78px;
+  position: absolute; left: 0; top: 0;
+  width: var(--bw); height: var(--bw);
+  padding: 0; border: 0; background: none; cursor: pointer;
+  pointer-events: auto; -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+.bird:focus-visible { outline: 3px solid var(--sky-deep); outline-offset: 2px; border-radius: 50%; }
+.bird.is-hidden { visibility: hidden; }
+.bird.is-gone { opacity: 0; transition: opacity .3s !important; }
+
+.bird-flip, .bird-bob { display: block; width: 100%; height: 100%; }
+.bird-flip { transition: transform .25s; }
+.bird[data-face="l"] .bird-flip { transform: scaleX(-1); }
+.bird-bob { transition: transform .9s cubic-bezier(.25, .7, .3, 1); }
+.bird-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* SVGの部品を回転させるときは中心がずれないように fill-box を使う */
+.bird .b-wing { transform-box: fill-box; transform-origin: 90% 8%; }
+.bird .b-eye  { transform-box: fill-box; transform-origin: center; animation: blink 4.8s infinite; }
+.bird .b-head { transform-box: fill-box; transform-origin: 40% 90%; animation: tilt 7s ease-in-out infinite; }
+.bird[data-bird="aurinko"] .b-eye  { animation-duration: 6.2s; animation-delay: -2.1s; }
+.bird[data-bird="aurinko"] .b-head { animation-duration: 9s; animation-delay: -3s; }
+
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes tilt  { 0%, 70%, 100% { transform: rotate(0); } 76%, 88% { transform: rotate(-16deg); } }
+
+.bird:not(.is-flapping):hover .bird-bob { animation: hop .5s ease; }
+@keyframes hop { 0%, 100% { transform: none; } 40% { transform: translateY(-9px); } }
+
+/* 羽ばたき */
+.bird.is-flapping .b-wing { animation: flap .13s ease-in-out infinite alternate; }
+.bird.is-flapping .b-feet { opacity: 0; }
+.bird.is-flapping .bird-bob { transform: rotate(-10deg); }
+.bird.is-far .bird-bob { transform: scale(.3) rotate(-10deg); transition: none; }
+@keyframes flap { from { transform: rotate(-6deg); } to { transform: rotate(78deg); } }
+
+/* 吹き出し */
+.bird-say {
+  position: absolute; bottom: 96%; left: 50%;
+  transform: translate(-50%, 6px);
+  padding: 3px 12px; border-radius: 14px;
+  background: #fff; color: var(--ink); box-shadow: var(--shadow);
+  font-size: .85rem; font-weight: 700; line-height: 1.6; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.bird-say::after {
+  content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+  border: 6px solid transparent; border-top-color: #fff;
+}
+.bird-say.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ページ見出しの上の止まり木 */
+.perch-branch { position: absolute; right: 22px; top: -58px; width: 210px; height: 96px; pointer-events: none; }
+.perch-branch svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.perch { position: absolute; left: var(--x); top: var(--y); width: 1px; height: 1px; }
+
+@media (max-width: 700px) {
+  .bird { --bw: 60px; }
+  .perch-branch { width: 160px; height: 73px; right: 6px; top: -46px; }
+}

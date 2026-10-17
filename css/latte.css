@@ -1,0 +1,72 @@
+/* ===== ドリンク調合演出 ===== */
+.latte-dialog {
+  width: min(92vw, 500px); max-height: 92vh; max-height: 92dvh;
+  padding: 0; border: 0; border-radius: 28px;
+  background: var(--paper); color: var(--ink);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .3);
+  overflow: auto;
+}
+.latte-dialog::backdrop { background: rgba(58, 46, 36, .6); }
+.latte-inner { position: relative; padding: 26px 24px 26px; text-align: center; }
+.latte-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: var(--cream); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer;
+}
+.latte-close:hover { background: var(--wood-light); }
+.latte-kicker { margin: 0; font-family: var(--font-display); font-style: italic; color: var(--moss-dark); font-size: .9rem; }
+.latte-inner h2 { margin: 0; padding: 0 40px; font-family: var(--font-display); font-size: 1.5rem; color: var(--bark); }
+.latte-stage { width: min(68vw, 290px); aspect-ratio: 1; margin: 10px auto 0; }
+.latte-stage.is-glass { width: min(52vw, 210px); aspect-ratio: 3 / 4; }
+.latte-stage svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.latte-step { min-height: 1.8em; margin: 8px 0 0; font-weight: 700; color: var(--moss-dark); }
+.latte-info { opacity: 0; transform: translateY(8px); transition: opacity .5s, transform .5s; }
+.is-done .latte-info { opacity: 1; transform: none; }
+.latte-desc { margin: 6px 0 0; text-align: left; }
+.latte-price { margin: 6px 0 14px; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; color: var(--bark); }
+
+/* カップ（上から見た図） */
+.latte-stage .liquid, .latte-stage .ripple, .latte-stage .pour, .latte-stage .art-line,
+.latte-stage .art-dot, .latte-stage .soda-liquid, .latte-stage .bubble, .latte-stage .mint, .latte-stage .ice {
+  transform-box: fill-box;
+}
+.latte-stage .liquid { transform-origin: center; transform: scale(0); }
+.latte-stage .ripple { transform-origin: center; opacity: 0; }
+.latte-stage .pour { transform-origin: 50% 0%; opacity: 0; }
+.latte-stage .art-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.latte-stage .art-dot { opacity: 0; }
+
+.is-brewing .liquid { animation: fill-cup 1.5s cubic-bezier(.3, .6, .4, 1) .15s both; }
+.is-brewing .ripple { animation: ripple 1.2s ease-out .3s 2 both; }
+.is-brewing .pour { animation: pour 1.65s ease both; }
+.is-brewing .art-line { animation: draw 1.5s ease-in-out 1.55s both; }
+.is-brewing .art-line-2 { animation-delay: 2.3s; animation-duration: .9s; }
+.is-brewing .art-dot { animation: pop .3s ease 2.6s both; }
+
+@keyframes fill-cup { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes ripple { from { opacity: .8; transform: scale(.4); } to { opacity: 0; transform: scale(2.6); } }
+@keyframes pour { 0% { opacity: 0; transform: scaleY(0); } 12% { opacity: 1; transform: scaleY(1); } 85% { opacity: 1; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { from { opacity: 0; } to { opacity: 1; } }
+
+/* ソーダ（横から見たグラス） */
+.latte-stage .soda-liquid { transform-origin: 50% 100%; transform: scaleY(0); }
+.latte-stage .bubble { opacity: 0; }
+.latte-stage .mint { opacity: 0; transform-origin: 50% 100%; }
+.latte-stage .ice { opacity: 0; }
+.is-brewing .soda-liquid { animation: rise 1.6s cubic-bezier(.3, .6, .4, 1) .15s both; }
+.is-brewing .ice { animation: pop .4s ease .7s both; }
+.is-brewing .bubble { animation: bubble 1.8s linear infinite; animation-delay: calc(1.3s + var(--d)); }
+.is-brewing .mint { animation: mint-in 1s cubic-bezier(.3, 1.4, .5, 1) 1.9s both, mint-bob 2.6s ease-in-out 2.9s infinite alternate; }
+@keyframes rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes bubble { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: .9; } 100% { opacity: 0; transform: translateY(-170px); } }
+@keyframes mint-in { from { opacity: 0; transform: translateY(-50px) rotate(-30deg); } to { opacity: 1; transform: none; } }
+@keyframes mint-bob { from { transform: rotate(0); } to { transform: rotate(6deg); } }
+
+/* 動きを控える設定：最初から完成した一杯を見せる */
+@media (prefers-reduced-motion: reduce) {
+  .latte-stage .liquid, .latte-stage .soda-liquid { transform: none; }
+  .latte-stage .art-line { stroke-dashoffset: 0; }
+  .latte-stage .art-dot, .latte-stage .mint, .latte-stage .ice { opacity: 1; }
+  .latte-stage .pour, .latte-stage .ripple, .latte-stage .bubble { display: none; }
+}

@@ -1,0 +1,68 @@
+/* ===== 奥行きの層（奥・中・手前）と飛行演出 ===== */
+.scene {
+  --pan: 0vw;
+  position: fixed; inset: 0; z-index: 0;
+  overflow: hidden; pointer-events: none;
+}
+.layer {
+  position: absolute; top: 0; bottom: 0;
+  transition: transform 1.2s cubic-bezier(.45, 0, .2, 1);
+}
+.layer-back { left: -8vw; right: -8vw; transform: translate3d(calc(var(--pan) * .45), 0, 0); }
+.layer-mid  { left: -14vw; right: -14vw; transform: translate3d(var(--pan), 0, 0); }
+.layer-inner, .front-inner { position: absolute; inset: 0; --depth: 6vw; --zoom: 1.08; }
+.layer-mid .layer-inner { --depth: 14vw; --zoom: 1.22; }
+.front-inner { --depth: 42vw; --zoom: 1.7; }
+.layer svg { display: block; width: 100%; height: 100%; }
+.wall-fill { fill: var(--wall); transition: fill 1.2s ease; }
+
+/* 手前の層：画面の四隅の葉っぱ（文字の上に少しかかる） */
+.scene-front { position: fixed; inset: 0; z-index: 12; pointer-events: none; overflow: hidden; }
+.corner { position: absolute; width: clamp(110px, 19vw, 270px); }
+.corner svg { display: block; width: 100%; height: auto; }
+.corner-tl { top: 0; left: 0; }
+.corner-tr { top: 0; right: 0; }
+.corner-bl { bottom: 0; left: 0; }
+.corner-br { bottom: 0; right: 0; }
+@media (max-width: 760px) {
+  .corner { width: 84px; }
+  .corner-bl, .corner-br { width: 70px; opacity: .9; }
+}
+
+/* ページ切り替え：インコと一緒に飛ぶ */
+.is-flying .layer-inner,
+.is-flying .front-inner { animation: fly-depth 1.25s cubic-bezier(.5, 0, .5, 1) both; }
+.is-flying.is-back .layer-inner,
+.is-flying.is-back .front-inner { animation-direction: reverse; }
+
+@keyframes fly-depth {
+  0%   { transform: none; }
+  46%  { transform: translate3d(calc(var(--dx) * var(--depth) * -1), calc(var(--dy) * var(--depth) * -1), 0) scale(var(--zoom)); }
+  54%  { transform: translate3d(calc(var(--dx) * var(--depth)), calc(var(--dy) * var(--depth)), 0) scale(.88); }
+  100% { transform: none; }
+}
+
+.is-flying #view { animation: view-fly 1.25s ease both; }
+.is-flying.is-back #view { animation-direction: reverse; }
+@keyframes view-fly {
+  0%   { opacity: 1; transform: none; }
+  36%  { opacity: 0; transform: translate3d(calc(var(--dx) * -7vw), calc(var(--dy) * -7vh), 0) scale(1.14); }
+  64%  { opacity: 0; transform: translate3d(calc(var(--dx) * 7vw), calc(var(--dy) * 7vh), 0) scale(.9); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* 動きを控える設定のとき：ふわっと切り替えるだけ */
+.is-fading #view { animation: view-fade .5s ease both !important; }
+@keyframes view-fade { 0% { opacity: 1; } 40%, 60% { opacity: 0; } 100% { opacity: 1; } }
+
+/* 画面を一瞬覆う葉っぱ */
+.leaf-cover {
+  position: fixed; top: 0; left: 0; z-index: 50;
+  width: 300vw; height: 100vh; height: 100dvh;
+  display: none; pointer-events: none;
+}
+.leaf-cover > svg { flex: 0 0 100vw; width: 100vw; height: 100%; display: block; }
+.is-flying .leaf-cover { display: flex; animation: leaf-sweep 1.25s cubic-bezier(.45, .05, .55, .95) both; }
+.is-flying.is-leftward .leaf-cover { animation-name: leaf-sweep-r; }
+@keyframes leaf-sweep   { from { transform: translate3d(100vw, 0, 0); } to { transform: translate3d(-300vw, 0, 0); } }
+@keyframes leaf-sweep-r { from { transform: translate3d(-300vw, 0, 0); } to { transform: translate3d(100vw, 0, 0); } }
